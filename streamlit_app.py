@@ -3,7 +3,7 @@ import pandas as pd
 import streamlit as st
 
 from sklearn.compose import ColumnTransformer
-from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
@@ -52,7 +52,7 @@ def load_data_and_train_model():
         ]
     )
 
-    model = LinearRegression()
+    model = GradientBoostingRegressor(random_state=42)
     pipe = Pipeline(
         steps=[
             ("preprocess", preprocessor),
@@ -106,7 +106,7 @@ def main():
     st.title("Прогноз прибыльности добычи блока")
     st.markdown(
         """
-        Этот сервис использует обученную линейную регрессию по данным `mining_block_model.csv`
+        Этот сервис использует обученную модель **Gradient Boosting** по данным `mining_block_model.csv`
         для **прогноза прибыли `Profit (USD)`** по параметрам блока.
         """
     )
@@ -114,7 +114,7 @@ def main():
     with st.spinner("Загружаем данные и обучаем модель..."):
         model, metrics, feature_info = load_data_and_train_model()
 
-    st.subheader("Качество модели (линейная регрессия)")
+    st.subheader("Качество модели (Gradient Boosting)")
     col1, col2 = st.columns(2)
     with col1:
         st.metric(
